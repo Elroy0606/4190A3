@@ -5,13 +5,17 @@ public class State {
 
     private int nextAction;
     private int otherAction1,otherAction2;
-
+    int[] possibleActions;
 
     public State(int h, int v )
     {
         this.h = h;
         this.v = v;
         currVal = 0.0;
+        possibleActions = new int[3];
+        nextAction = 0;
+        otherAction1 = 0;
+        otherAction2 = 0;
     }
 
     public int getH() {
@@ -50,9 +54,9 @@ public class State {
         return currVal;
     }
 
-    public void setCurrVal(double currVal)
-    {
-        this.currVal = currVal;
-    }
 
+
+    public int[] getPossibleActions() {
+        return possibleActions;
+    }
 }
