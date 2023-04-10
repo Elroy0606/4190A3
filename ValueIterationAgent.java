@@ -17,9 +17,9 @@ public class ValueIterationAgent {
             Arrays.fill(Grid[i], 0.0);
         }
         computeValueIteration(Grid,2);
-        System.out.println("Hello World");
+        System.out.println(calculateIterationValue(1, 0, 0.72, 0, 0.8, 0.9));
+        //System.out.println("Hello World");
     }
-
     private static void computeValueIteration(double[][] grid, int i) {
         int currPosH;
         int currPosV;
@@ -34,31 +34,15 @@ public class ValueIterationAgent {
                 currPosH = 3;
                 continue;
             }
-            if(currPosH )
-
-
-        }
-
-
-    }
-
-    public ValueIterationAgent(int horizontal, int vertical, int k, int episodes, double discount, double alpha, double noise, double transitionCost) {
-        this.horizontal = horizontal;
-        this.vertical = vertical;
-        this.k = k;
-        this.episodes = episodes;
-        this.discount = discount;
-        this.alpha = alpha;
-        this.noise = noise;
-        this.transitionCost = transitionCost;
-
-        this.values = new double[horizontal][vertical];
-        for (int i = 0; i < horizontal; i++) {
-            Arrays.fill(values[i], 0.0);
         }
     }
 
+    private static double calculateIterationValue(double pos1, double pos2, double pos3, double reward, double prob, double gamma){
+        double probAlt = (1-prob)/2;
 
+        return (prob*(reward + (gamma*pos1)) + probAlt*(reward + (gamma*pos2)) + probAlt*(reward + (gamma*pos3)));
+
+    }
 
 
 
