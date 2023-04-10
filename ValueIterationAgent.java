@@ -15,6 +15,15 @@ public class ValueIterationAgent {
     public static void main(String[] args) {
         int horizontal = 5;
         int vertical = 3;
+
+        State [][] gridLayout = new State[horizontal][vertical];
+
+        for (int i = 0; i < gridLayout.length; i++) {
+            for (int j = 0; j < gridLayout[i].length; j++) {
+                gridLayout[i][j] = new State(i,j);
+            }
+        }
+
         double [][] Grid = new double[horizontal][vertical];
         for (int i = 0; i < horizontal; i++) {
             Arrays.fill(Grid[i], 0.0);
@@ -135,8 +144,12 @@ public class ValueIterationAgent {
                 while(count < k)
                 {
 
+                    //some actions
+
+
                     count ++;
                 }
+                //k== count and reward
             }
         }
     }
