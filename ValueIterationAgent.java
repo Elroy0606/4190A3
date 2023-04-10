@@ -2,55 +2,40 @@ import java.util.*;
 
 public class ValueIterationAgent {
     private int k;
-
-
     private int episodes;
     private double discount;
     private double alpha;
     private double noise;
     private double transitionCost;
     private double[][] values;
+    private Terminal terminalState;
+
+
 
     public static void main(String[] args) {
-        int horizontal = 3;
-        int vertical = 4;
+        int horizontal = 5;
+        int vertical = 3;
         double [][] Grid = new double[horizontal][vertical];
         for (int i = 0; i < horizontal; i++) {
             Arrays.fill(Grid[i], 0.0);
         }
         computeValueIteration(Grid,2);
 
-        Grid[0][1] = 2;
-        Grid[1][0] = 22;
-        Grid[2][1] = 211;
-        Grid[1][2] = 2111;
-
+        Grid[0][2] = 1;
+        Grid[1][2] = -1;
         ValueIterationAgent v = new ValueIterationAgent();
-        System.out.println(v.findHighestAdjacentValue(Grid,1,1));
+      //  System.out.println(v.findHighestAdjacentValue(Grid,0,0));
 
-        System.out.println(calculateIterationValue(1, 0, 0.72, 0, 0.8, 0.9));
+        v.createGrid(Grid);
+
+        System.out.println(calculateIterationValue(0.43, 0, 0, 0, 0.8, 0.9));
         //System.out.println("Hello World");
     }
     private static void computeValueIteration(double[][] grid, int i) {
-        int currPosH;
-        int currPosV;
-        for (int j = 0; j < i; j++) {
-            if (i == 0){
-                continue;
-            }
-            else if(i == 1){
-                grid[1][3] = -1.0;
-                grid[0][3] = 1.0;
-                currPosH = 0;
-                currPosH = 3;
-                continue;
-            }
-        }
     }
 
     private static double calculateIterationValue(double pos1, double pos2, double pos3, double reward, double prob, double gamma){
         double probAlt = (1-prob)/2;
-
         return (prob*(reward + (gamma*pos1)) + probAlt*(reward + (gamma*pos2)) + probAlt*(reward + (gamma*pos3)));
 
     }
@@ -61,8 +46,6 @@ public class ValueIterationAgent {
         double max = Double.MIN_VALUE;
         int result = -1;
         int [] arrResult = new int[3];
-
-        int noAction = -1;
         int pos2 = -1;
         int pos3 = -1;
 
@@ -110,31 +93,28 @@ public class ValueIterationAgent {
     }
 
 
-    public double[] getActionValue(int [] action,double [][]grid, int row, int col)
-    {
-
-
+    public double[] getActionValue(int [] action,double [][]grid, int row, int col) {
         double[] result = new double[3];
         int count = 0;
         while(count != result.length) {
-            for (int i = 0; i < action.length; i++) {
+            for (int j : action) {
                 //east
-                if (action[i] == 1 && col - 1 > 0) {
-                    result[count] =grid[row][col - 1];
+                if (j == 1 && col - 1 > 0) {
+                    result[count] = grid[row][col - 1];
                 }
 
                 //north
-                else if (action[i] == 2 && row - 1 > 0) {
+                else if (j == 2 && row - 1 > 0) {
                     result[count] = grid[row - 1][col];
                 }
 
                 //west
-                else if (action[i] == 3 && col + 1 < grid[0].length - 1) {
+                else if (j == 3 && col + 1 < grid[0].length - 1) {
                     result[count] = grid[row][col + 1];
 
                 }
                 //south
-                else if (action[i] == 4 && row + 1 < grid.length - 1) {
+                else if (j == 4 && row + 1 < grid.length - 1) {
                     result[count] = grid[row + 1][col];
                 }
             }
@@ -146,12 +126,45 @@ public class ValueIterationAgent {
     }
 
 
+    public void runIteration(double[][] grid, int k)
+    {
+
+        int count = 0;
+        for (int i = 0; i < grid.length; i++) {
+            for (int j = 0; j < grid[i].length; j++) {
+                while(count < k)
+                {
+
+                    count ++;
+                }
+            }
+        }
+    }
+
+//    public double valueIterationAlgorithm(int k ,State currState, double reward, double gamma, double probability)
+//    {
+//        if(k == 0  || terminalState.isExit(currState.getH(),currState.getV(),currState.getCurrVal()))
+//        {
+//            return currState.getCurrVal();
+//        }
+//
+//     //   currState = probability*( reward + gamma* valueIterationAlgorithm(k-1,));
+//
+//
+//
+//
+//
+//
+//
+//        return 0;
+//
+//    }
+
     public double getTransitionCost() {
         return transitionCost;
     }
 
-    public double getProb()
-    {
+    public double getProb() {
         return (1- noise);
     }
 
@@ -159,9 +172,37 @@ public class ValueIterationAgent {
         return discount;
     }
 
-    public void currVal(double[][]grid, int x, int y)
-    {
+    public void currVal(double[][]grid, int x, int y) {
         double [] arr= getActionValue(findHighestAdjacentValue(grid,x,y),grid,x,y);
         grid[x][y] = calculateIterationValue(arr[0],arr[1],arr[2],getTransitionCost(),getProb(),getDiscount());
     }
-}
+
+
+    public static void createGrid(double [][] Grid) {
+        int numRows = Grid.length;
+        int numCols = Grid[0].length;
+
+        // Print top row
+        System.out.print("|");
+        for (int i = 0; i < numCols; i++) {
+            System.out.print("______|");
+        }
+        System.out.println();
+
+        // Print middle rows
+        for (int i = 0; i < numRows; i++) {
+            System.out.print("|");
+            for (int j = 0; j < numCols; j++) {
+                System.out.printf(" %.2f |", Grid[i][j]);
+            }
+            System.out.println();
+
+            System.out.print("|");
+            for (int j = 0; j < numCols; j++) {
+                System.out.print("______|");
+            }
+            System.out.println();
+        }
+    }
+
+        }
