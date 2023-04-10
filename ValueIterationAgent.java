@@ -51,7 +51,7 @@ public class ValueIterationAgent {
 
 
 
-    public  int[] findHighestAdjacentValue(double[][] grid, int row, int col) {
+    public  int[] findHighestAdjacentValue(State[][] grid, int row, int col) {
         double max = Double.MIN_VALUE;
         int result = -1;
         int [] arrResult = new int[3];
@@ -60,8 +60,8 @@ public class ValueIterationAgent {
 
 
         // Check north
-        if (row > 0 && grid[row-1][col] > max) {
-            max = grid[row-1][col];
+        if (row > 0 && grid[row-1][col].getCurrVal() > max) {
+            max = grid[row-1][col].getCurrVal();
             result = 2;
             pos3 = 3;
             pos2 = 1;
@@ -69,23 +69,23 @@ public class ValueIterationAgent {
         }
 
         // Check south
-        if (row < grid.length-1 && grid[row+1][col] > max) {
-            max = grid[row+1][col];
+        if (row < grid.length-1 && grid[row+1][col].getCurrVal() > max) {
+            max = grid[row+1][col].getCurrVal();
             result = 4;
             pos3 = 3;
             pos2 = 1;
         }
 
         // Check east
-        if (col > 0 && grid[row][col-1] > max) {
-            max = grid[row][col-1];
+        if (col > 0 && grid[row][col-1].getCurrVal() > max) {
+            max = grid[row][col-1].getCurrVal();
             result = 1;
             pos3 = 2;
             pos2 = 4;
         }
 
         // Check west
-        if (col < grid[0].length-1 && grid[row][col+1] > max) {
+        if (col < grid[0].length-1 && grid[row][col+1].getCurrVal() > max) {
             result = 3;
             pos3 = 2;
             pos2 = 4;
