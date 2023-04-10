@@ -33,7 +33,7 @@ public class ValueIterationAgent {
         Grid[0][2] = 1;
         Grid[1][2] = -1;
         ValueIterationAgent v = new ValueIterationAgent();
-      //  System.out.println(v.findHighestAdjacentValue(Grid,0,0));
+
 
         v.createGrid(Grid);
 
@@ -92,6 +92,9 @@ public class ValueIterationAgent {
         }
 
 
+
+        grid[row][col].setNextAction( result);
+        grid[row][col].
         arrResult[0]= result;
         arrResult[2] = pos2;
         arrResult[3] = pos3;
@@ -183,11 +186,6 @@ public class ValueIterationAgent {
 
     public double getDiscount() {
         return discount;
-    }
-
-    public void currVal(double[][]grid, int x, int y) {
-        double [] arr= getActionValue(findHighestAdjacentValue(grid,x,y),grid,x,y);
-        grid[x][y] = calculateIterationValue(arr[0],arr[1],arr[2],getTransitionCost(),getProb(),getDiscount());
     }
 
 
