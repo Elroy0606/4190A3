@@ -26,7 +26,7 @@ public class GridGUI extends JFrame {
         protected void paintComponent(Graphics g) {
 
 
-          super.paintComponent(g);
+            super.paintComponent(g);
             g.setColor(Color.BLACK);
             g.fillRect(0, 0, getWidth(), getHeight());
 
@@ -83,7 +83,7 @@ public class GridGUI extends JFrame {
         // Ensure n is within the range of 0-255
         if (curr != 0) {
             n = (int) Math.max(0, Math.min(255,(255*curr/max)));
-         }
+        }
 
         // Create and return the color object
         return new Color(0, n, 0);
