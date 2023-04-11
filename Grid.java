@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 public class Grid {
 
     private final State [][] Grid;
@@ -25,19 +27,35 @@ public class Grid {
     }
 
     public void iterateOver(){
-
-        int [] states = {1,2,3,4};
+        ArrayList<State> newState = new ArrayList<>();
+        int [] actions = {1,2,3,4};
         double [] itValues = new double[4];
-        double [] values = new double[3];
+        double [] values;
         for (int i = 0; i < row; i++) {
             for (int j = 0; j < col; j++) {
-                for (int k = 0; k < states.length; k++) {
-                    Grid[i][j].setActionTaken(states[k]);
+                if(Grid[i][j].getCurrVal() >=1 || Grid[i][j].getCurrVal() < 0 ){
+                    continue;
+                }
+                for (int k = 0; k < actions.length; k++) {
+                    Grid[i][j].setActionTaken(actions[k]);
                     values = getOtherCell(i,j);
                     itValues[k] = calculateIterationValue(values[0], values[1], values[2], 0, 0.8, 0.9);
                 }
-                Grid[i][j].setCurrVal(returnMax(itValues));
+                if(returnMax(itValues) > 0) {
+                    newState.add(new State(i, j, returnMax(itValues)));
+                }
+//                Grid[i][j].setCurrVal(returnMax(itValues));
             }
+        }
+        updateGrid(newState);
+    }
+
+    public void updateGrid(ArrayList<State> nothing){
+        int hm,ha = 0;
+        for (int i = 0; i < nothing.size(); i++) {
+            hm = nothing.get(i).getH();
+            ha = nothing.get(i).getV();
+            Grid[hm][ha].setCurrVal(nothing.get(i).getCurrVal());
         }
     }
     public double[] getOtherCell(int row, int col){
@@ -62,7 +80,7 @@ public class Grid {
             pos3 = getSouth(s);
         }
         else if(s.getActionTaken() == 4){
-            pos1 = getNorth(s);
+            pos1 = getSouth(s);
             pos2 = getEast(s);
             pos3 = getWest(s);
         }
@@ -86,6 +104,9 @@ public class Grid {
         }
         return isValid;
     }
+    public boolean isBlockCell(int row, int col){
+        return Grid[row][col].getCurrVal() == Double.NEGATIVE_INFINITY;
+    }
 
     public int getRow() {
         return row;
@@ -105,29 +126,29 @@ public class Grid {
         return maxVal;
     }
     public double getNorth(State s){
-        double retState = 0;
-        if (isValidCell(s.getH()-1, s.getV())){
+        double retState = s.getCurrVal();
+        if (isValidCell(s.getH()-1, s.getV()) && !isBlockCell(s.getH()-1, s.getV())){
             retState = Grid[s.getH()-1][s.getV()].getCurrVal();
         }
         return retState;
     }
     public double getSouth(State s){
-        double retState = 0;
-        if (isValidCell(s.getH()+1, s.getV())){
+        double retState = s.getCurrVal();
+        if (isValidCell(s.getH()+1, s.getV()) && !isBlockCell(s.getH()+1, s.getV())){
             retState = Grid[s.getH()+1][s.getV()].getCurrVal();
         }
         return retState;
     }
     public double getEast(State s){
-        double retState = 0;
-        if (isValidCell(s.getH(), s.getV()+1)){
+        double retState = s.getCurrVal();
+        if (isValidCell(s.getH(), s.getV()+1) && !isBlockCell(s.getH(), s.getV()+1)){
             retState = Grid[s.getH()][s.getV()+1].getCurrVal();
         }
         return retState;
     }
     public  double getWest(State s){
-        double retState = 0;
-        if (isValidCell(s.getH(), s.getV()-1)){
+        double retState = s.getCurrVal();
+        if (isValidCell(s.getH(), s.getV()-1) && !isBlockCell(s.getH(), s.getV()-1)){
             retState = Grid[s.getH()][s.getV()-1].getCurrVal();
         }
         return retState;
@@ -145,7 +166,13 @@ public class Grid {
         for (int i = 0; i < row; i++) {
             System.out.print("|");
             for (int j = 0; j < col; j++) {
-                System.out.printf(" %.2f |", Grid[i][j].getCurrVal());
+                if(Grid[i][j].getCurrVal() == Double.NEGATIVE_INFINITY){
+                    System.out.printf("      |");
+                }
+                else{
+                    System.out.printf(" %.2f |", Grid[i][j].getCurrVal());
+                }
+
             }
             System.out.println();
 

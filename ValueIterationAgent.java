@@ -13,8 +13,8 @@ public class ValueIterationAgent {
 
 
     public static void main(String[] args) {
-        int horizontal = 5;
-        int vertical = 3;
+        int horizontal = 3;
+        int vertical = 4;
 
         Grid newGrid = new Grid(horizontal,vertical);
 
@@ -34,12 +34,13 @@ public class ValueIterationAgent {
 //        computeValueIteration(Grid,2);
 //
         System.out.println(" ");
-        newGrid.add(0,2, 1);
-        newGrid.add(1,2, -1);
+        newGrid.add(0,3, 1);
+        newGrid.add(1,3, -1);
+        newGrid.add(1,1, Double.NEGATIVE_INFINITY);
         newGrid.printGrid();
 
         int count = 0;
-        while(count!= 2) {
+        while(count!= 4) {
             newGrid.iterateOver();
             System.out.println(" ");
             newGrid.printGrid();

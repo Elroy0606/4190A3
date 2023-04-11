@@ -20,6 +20,16 @@ public class State {
 //        otherAction1 = 0;
 //        otherAction2 = 0;
     }
+    public State(int h, int v, double currVal) {
+        this.h = h;
+        this.v = v;
+        this. currVal = currVal;
+        possibleActions = new int[3];
+        actionTaken = 0;
+//        nextAction = 0;
+//        otherAction1 = 0;
+//        otherAction2 = 0;
+    }
 
     //    public int getNextAction() {
 //        return nextAction;
