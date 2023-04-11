@@ -37,7 +37,7 @@ public class ValueIterationAgent {
         newGrid.printGrid();
 
 
-        while(count!= 100) {
+        while(count!= 3) {
             newGrid.iterateOver();
             System.out.println("K = "+ count);
             newGrid.printGrid();
