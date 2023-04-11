@@ -20,41 +20,15 @@ public class ValueIterationAgent {
 
         newGrid.initialize();
         newGrid.printGrid();
-//
-//        for (int i = 0; i < gridLayout.length; i++) {
-//            for (int j = 0; j < gridLayout[i].length; j++) {
-//                gridLayout[i][j] = new State(i,j);
-//            }
-//        }
-//
-//        double [][] Grid = new double[horizontal][vertical];
-//        for (int i = 0; i < horizontal; i++) {
-//            Arrays.fill(Grid[i], 0.0);
-//        }
-//        computeValueIteration(Grid,2);
-//
         System.out.println(" ");
+
         newGrid.add(0,3, 1);
         newGrid.add(1,3, -1);
         newGrid.add(1,1, Double.NEGATIVE_INFINITY);
         newGrid.printGrid();
 
-        int count = 0;
-        while(count!= 4) {
-            newGrid.iterateOver();
-            System.out.println(" ");
-            newGrid.printGrid();
-            count++;
-        }
-//        Grid[0][2] = 1;
-//        Grid[1][2] = -1;
-//        ValueIterationAgent v = new ValueIterationAgent();
-//
-//
-//        v.createGrid(Grid);
-//
-//        System.out.println(calculateIterationValue(0.43, 0, 0, 0, 0.8, 0.9));
-        //System.out.println("Hello World");
+
+            newGrid.iterateOver(2);
     }
     private static double calculateIterationValue(double pos1, double pos2, double pos3, double reward, double prob, double gamma){
         double probAlt = (1-prob)/2;

@@ -5,6 +5,7 @@ public class Grid {
     private final State [][] Grid;
     private final int row;
     private final int col;
+    private ArrayList <ExitState> ExitStates = new ArrayList<>();
 
     public Grid(int horizontal, int vertical) {
         row = horizontal;
@@ -26,28 +27,34 @@ public class Grid {
         Grid[row][col] = newState;
     }
 
-    public void iterateOver(){
-        ArrayList<State> newState = new ArrayList<>();
-        int [] actions = {1,2,3,4};
-        double [] itValues = new double[4];
-        double [] values;
-        for (int i = 0; i < row; i++) {
-            for (int j = 0; j < col; j++) {
-                if(Grid[i][j].getCurrVal() >=1 || Grid[i][j].getCurrVal() < 0 ){
-                    continue;
+    public boolean iterateOver(int l){
+        int count = 0;
+        while (count != l) {
+            ArrayList<State> newState = new ArrayList<>();
+            int[] actions = {1, 2, 3, 4};
+            double[] itValues = new double[4];
+            double[] values;
+            for (int i = 0; i < row; i++) {
+                for (int j = 0; j < col; j++) {
+                    if (Grid[i][j].getCurrVal() >= 1 || Grid[i][j].getCurrVal() < 0) {
+                        continue;
+                    }
+                    for (int k = 0; k < actions.length; k++) {
+                        Grid[i][j].setActionTaken(actions[k]);
+                        values = getOtherCell(i, j);
+                        itValues[k] = calculateIterationValue(values[0], values[1], values[2], 0, 0.8, 0.9);
+                    }
+                    if (returnMax(itValues) > 0) {
+                        newState.add(new State(i, j, returnMax(itValues)));
+                    }
                 }
-                for (int k = 0; k < actions.length; k++) {
-                    Grid[i][j].setActionTaken(actions[k]);
-                    values = getOtherCell(i,j);
-                    itValues[k] = calculateIterationValue(values[0], values[1], values[2], 0, 0.8, 0.9);
-                }
-                if(returnMax(itValues) > 0) {
-                    newState.add(new State(i, j, returnMax(itValues)));
-                }
-//                Grid[i][j].setCurrVal(returnMax(itValues));
             }
-        }
-        updateGrid(newState);
+            count++;
+            updateGrid(newState);
+            System.out.println("\nk = " + count);
+            printGrid();
+            }
+        return true;
     }
 
     public void updateGrid(ArrayList<State> nothing){
@@ -107,15 +114,25 @@ public class Grid {
     public boolean isBlockCell(int row, int col){
         return Grid[row][col].getCurrVal() == Double.NEGATIVE_INFINITY;
     }
+    public void createExitStates() {
+        int hm,ha = 0;
+        for (int i = 0; i < ExitStates.size(); i++) {
+            hm = ExitStates.get(i).getH();
+            ha = ExitStates.get(i).getV();
+            add(hm,ha, ExitStates.get(i).getReward());
+        }
+    }
+
+    public void setExitStates(ExitState e) {
+        ExitStates.add(e);
+    }
 
     public int getRow() {
         return row;
     }
-
     public int getCol() {
         return col;
     }
-
     public double returnMax(double[] arr){
         double maxVal = 0.0;
 
@@ -153,7 +170,6 @@ public class Grid {
         }
         return retState;
     }
-
     public void printGrid() {
         // Print top row
         System.out.print("|");
