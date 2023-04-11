@@ -22,9 +22,6 @@ public class State {
         possibleActions = new int[3];
         actionTaken = 0;
         isTerminal = false;
-//        nextAction = 0;
-//        otherAction1 = 0;
-//        otherAction2 = 0;
     }
 
     public boolean isTerminal() {
@@ -41,34 +38,7 @@ public class State {
         this. currVal = currVal;
         possibleActions = new int[3];
         actionTaken = 0;
-//        nextAction = 0;
-//        otherAction1 = 0;
-//        otherAction2 = 0;
     }
-
-    //    public int getNextAction() {
-//        return nextAction;
-//    }
-//
-//    public int getOtherAction1() {
-//        return otherAction1;
-//    }
-//
-//    public int getOtherAction2() {
-//        return otherAction2;
-//    }
-//
-//    public void setNextAction(int nextAction) {
-//        this.nextAction = nextAction;
-//    }
-//
-//    public void setOtherAction1(int otherAction1) {
-//        this.otherAction1 = otherAction1;
-//    }
-//
-//    public void setOtherAction2(int otherAction2) {
-//        this.otherAction2 = otherAction2;
-//    }
     public int getH() {
         return h;
     }

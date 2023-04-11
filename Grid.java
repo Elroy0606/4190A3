@@ -5,10 +5,6 @@ public class Grid {
     private final State [][] grid;
     private final int row;
     private final int col;
-
-    public double diamond;
-    public double firePit;
-
     public Grid(int horizontal, int vertical) {
         row = horizontal;
         col = vertical;
