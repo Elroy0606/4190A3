@@ -18,43 +18,34 @@ public class ValueIterationAgent {
 
         Grid newGrid = new Grid(horizontal,vertical);
 
+
+
         newGrid.initialize();
         newGrid.printGrid();
+
+        int count = 1;
+        System.out.println("K = "+ count++);
+        newGrid.addTerminal(0,3,1);
+        newGrid.addTerminal(1,3,-1);
+        newGrid.addTerminal(1,1,Double.NEGATIVE_INFINITY);
+//        newGrid.addTerminal(1,3, 10);
+//        newGrid.addTerminal(1,4, -10);
+//        newGrid.addTerminal(0,2, -10);
 //
-//        for (int i = 0; i < gridLayout.length; i++) {
-//            for (int j = 0; j < gridLayout[i].length; j++) {
-//                gridLayout[i][j] = new State(i,j);
-//            }
-//        }
-//
-//        double [][] Grid = new double[horizontal][vertical];
-//        for (int i = 0; i < horizontal; i++) {
-//            Arrays.fill(Grid[i], 0.0);
-//        }
-//        computeValueIteration(Grid,2);
-//
-        System.out.println(" ");
-        newGrid.add(0,3, 1);
-        newGrid.add(1,3, -1);
-        newGrid.add(1,1, Double.NEGATIVE_INFINITY);
+//        newGrid.addTerminal(1,2, Double.NEGATIVE_INFINITY);
+//        newGrid.addTerminal(4,4, Double.NEGATIVE_INFINITY);
         newGrid.printGrid();
 
-        int count = 0;
-        while(count!= 4) {
+
+        while(count!= 100) {
             newGrid.iterateOver();
-            System.out.println(" ");
+            System.out.println("K = "+ count);
             newGrid.printGrid();
             count++;
         }
-//        Grid[0][2] = 1;
-//        Grid[1][2] = -1;
-//        ValueIterationAgent v = new ValueIterationAgent();
-//
-//
-//        v.createGrid(Grid);
-//
-//        System.out.println(calculateIterationValue(0.43, 0, 0, 0, 0.8, 0.9));
-        //System.out.println("Hello World");
+
+        GridGUI displayGrid = new GridGUI(newGrid);
+
     }
     private static double calculateIterationValue(double pos1, double pos2, double pos3, double reward, double prob, double gamma){
         double probAlt = (1-prob)/2;

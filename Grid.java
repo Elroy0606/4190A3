@@ -2,28 +2,41 @@ import java.util.ArrayList;
 
 public class Grid {
 
-    private final State [][] Grid;
+    private final State [][] grid;
     private final int row;
     private final int col;
+
+    public double diamond;
+    public double firePit;
 
     public Grid(int horizontal, int vertical) {
         row = horizontal;
         col = vertical;
-        Grid = new State [horizontal][vertical];
+        grid = new State [horizontal][vertical];
     }
 
     public void initialize(){
         for (int i = 0; i < row; i++) {
             for (int j = 0; j < col; j++) {
-                Grid[i][j] = new State(i,j);
+                grid[i][j] = new State(i,j);
             }
         }
+    }
+
+    public State[][] getGrid() {
+        return grid;
     }
 
     public void add(int row, int col, double val){
         State newState = new State(row, col);
         newState.setCurrVal(val);
-        Grid[row][col] = newState;
+        grid[row][col] = newState;
+    }
+    public void addTerminal(int row, int col, double val){
+        State newState = new State(row, col);
+        newState.setTerminal(true);
+        newState.setCurrVal(val);
+        grid[row][col] = newState;
     }
 
     public void iterateOver(){
@@ -33,11 +46,11 @@ public class Grid {
         double [] values;
         for (int i = 0; i < row; i++) {
             for (int j = 0; j < col; j++) {
-                if(Grid[i][j].getCurrVal() >=1 || Grid[i][j].getCurrVal() < 0 ){
+                if(grid[i][j].getCurrVal() >=1 || grid[i][j].getCurrVal() < 0 ){
                     continue;
                 }
                 for (int k = 0; k < actions.length; k++) {
-                    Grid[i][j].setActionTaken(actions[k]);
+                    grid[i][j].setActionTaken(actions[k]);
                     values = getOtherCell(i,j);
                     itValues[k] = calculateIterationValue(values[0], values[1], values[2], 0, 0.8, 0.9);
                 }
@@ -55,11 +68,11 @@ public class Grid {
         for (int i = 0; i < nothing.size(); i++) {
             hm = nothing.get(i).getH();
             ha = nothing.get(i).getV();
-            Grid[hm][ha].setCurrVal(nothing.get(i).getCurrVal());
+            grid[hm][ha].setCurrVal(nothing.get(i).getCurrVal());
         }
     }
     public double[] getOtherCell(int row, int col){
-        State s = Grid[row][col];
+        State s = grid[row][col];
         double[] retArr = new double[3];
         double pos1 = 0;
         double pos2 = 0;
@@ -105,7 +118,7 @@ public class Grid {
         return isValid;
     }
     public boolean isBlockCell(int row, int col){
-        return Grid[row][col].getCurrVal() == Double.NEGATIVE_INFINITY;
+        return grid[row][col].getCurrVal() == Double.NEGATIVE_INFINITY;
     }
 
     public int getRow() {
@@ -128,37 +141,37 @@ public class Grid {
     public double getNorth(State s){
         double retState = s.getCurrVal();
         if (isValidCell(s.getH()-1, s.getV()) && !isBlockCell(s.getH()-1, s.getV())){
-            retState = Grid[s.getH()-1][s.getV()].getCurrVal();
+            retState = grid[s.getH()-1][s.getV()].getCurrVal();
         }
         return retState;
     }
     public double getSouth(State s){
         double retState = s.getCurrVal();
         if (isValidCell(s.getH()+1, s.getV()) && !isBlockCell(s.getH()+1, s.getV())){
-            retState = Grid[s.getH()+1][s.getV()].getCurrVal();
+            retState = grid[s.getH()+1][s.getV()].getCurrVal();
         }
         return retState;
     }
     public double getEast(State s){
         double retState = s.getCurrVal();
         if (isValidCell(s.getH(), s.getV()+1) && !isBlockCell(s.getH(), s.getV()+1)){
-            retState = Grid[s.getH()][s.getV()+1].getCurrVal();
+            retState = grid[s.getH()][s.getV()+1].getCurrVal();
         }
         return retState;
     }
     public  double getWest(State s){
         double retState = s.getCurrVal();
         if (isValidCell(s.getH(), s.getV()-1) && !isBlockCell(s.getH(), s.getV()-1)){
-            retState = Grid[s.getH()][s.getV()-1].getCurrVal();
+            retState = grid[s.getH()][s.getV()-1].getCurrVal();
         }
         return retState;
     }
 
     public void printGrid() {
         // Print top row
-        System.out.print("|");
+        System.out.print("+");
         for (int i = 0; i < col; i++) {
-            System.out.print("______|");
+            System.out.print("--------+");
         }
         System.out.println();
 
@@ -166,19 +179,19 @@ public class Grid {
         for (int i = 0; i < row; i++) {
             System.out.print("|");
             for (int j = 0; j < col; j++) {
-                if(Grid[i][j].getCurrVal() == Double.NEGATIVE_INFINITY){
+                if(grid[i][j].getCurrVal() == Double.NEGATIVE_INFINITY){
                     System.out.printf("      |");
                 }
                 else{
-                    System.out.printf(" %.2f |", Grid[i][j].getCurrVal());
+                    System.out.printf(" %.2f   |", grid[i][j].getCurrVal());
                 }
 
             }
             System.out.println();
 
-            System.out.print("|");
+            System.out.print("+");
             for (int j = 0; j < col; j++) {
-                System.out.print("______|");
+                System.out.print("--------+");
             }
             System.out.println();
         }

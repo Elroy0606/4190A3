@@ -8,18 +8,33 @@ public class State {
     private int[] possibleActions;
     private int actionTaken;
 
+    private double oldVal;
+
+    public  boolean isTerminal;
+
 
     public State(int h, int v)
     {
         this.h = h;
         this.v = v;
         currVal = 0.0;
+        oldVal = 0.0;
         possibleActions = new int[3];
         actionTaken = 0;
+        isTerminal = false;
 //        nextAction = 0;
 //        otherAction1 = 0;
 //        otherAction2 = 0;
     }
+
+    public boolean isTerminal() {
+        return isTerminal;
+    }
+
+    public void setTerminal(boolean terminal) {
+        isTerminal = terminal;
+    }
+
     public State(int h, int v, double currVal) {
         this.h = h;
         this.v = v;
@@ -73,7 +88,12 @@ public class State {
         return currVal;
     }
     public void setCurrVal(double currVal) {
+        this.oldVal = this.currVal;
         this.currVal = currVal;
+    }
+
+    public double getOldVal() {
+        return oldVal;
     }
 
     public int[] getPossibleActions() {
