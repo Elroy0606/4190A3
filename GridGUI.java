@@ -38,6 +38,7 @@ public class GridGUI extends JFrame {
             for (int i = 0; i <grid.getRow(); i++) {
                 for (int j = 0; j < grid.getCol() ; j++) {
 
+                    //yo
                     int x = i * width / grid.getRow();
                     int y = j * height / grid.getCol();
 
