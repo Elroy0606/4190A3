@@ -38,9 +38,13 @@ public class ValueIterationAgent {
         newGrid.add(1,2, -1);
         newGrid.printGrid();
 
-        newGrid.iterateOver();
-        System.out.println(" ");
-        newGrid.printGrid();
+        int count = 0;
+        while(count!= 2) {
+            newGrid.iterateOver();
+            System.out.println(" ");
+            newGrid.printGrid();
+            count++;
+        }
 //        Grid[0][2] = 1;
 //        Grid[1][2] = -1;
 //        ValueIterationAgent v = new ValueIterationAgent();
