@@ -1,3 +1,5 @@
+import java.util.Queue;
+
 public class State {
 
     private int h,v;
@@ -12,6 +14,8 @@ public class State {
 
     public  boolean isTerminal;
 
+    private double [] qValues;
+
 
     public State(int h, int v)
     {
@@ -22,6 +26,23 @@ public class State {
         possibleActions = new int[3];
         actionTaken = 0;
         isTerminal = false;
+        qValues = new double[4];
+
+
+    }
+
+    public double[] getqValues() {
+        return qValues;
+    }
+
+    public void setQValues(double[] qValues) {
+
+
+        for (int i = 0; i < qValues.length; i++) {
+            this.qValues[i] = qValues[i];
+        }
+
+
     }
 
     public boolean isTerminal() {

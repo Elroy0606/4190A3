@@ -62,20 +62,27 @@ public class Grid {
                     itValues[k] = calculateIterationValue(values[0], values[1], values[2], -0.1, 0.8, 0.9);
                 }
                 if(returnMax(itValues) > 0) {
-                    newState.add(new State(i, j, returnMax(itValues)));
+
+                    State temp = new State(i,j,returnMax(itValues));
+                    newState.add(temp);
+
+
+
+
                 }
 //                Grid[i][j].setCurrVal(returnMax(itValues));
             }
         }
-        updateGrid(newState);
+        updateGrid(newState,itValues);
     }
 
-    public void updateGrid(ArrayList<State> nothing){
+    public void updateGrid(ArrayList<State> nothing, double[] qVal){
         int hm,ha = 0;
         for (int i = 0; i < nothing.size(); i++) {
             hm = nothing.get(i).getH();
             ha = nothing.get(i).getV();
             grid[hm][ha].setCurrVal(nothing.get(i).getCurrVal());
+            grid[hm][ha].setQValues(qVal);
         }
     }
     public double[] getOtherCell(int row, int col){

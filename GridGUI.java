@@ -17,6 +17,8 @@ public class GridGUI extends JFrame {
         this.grid = grid;
         add(new GridPanel());
         setVisible(true);
+//        add(new GridQ());
+//        setVisible(true);
     }
 
 
@@ -86,6 +88,120 @@ public class GridGUI extends JFrame {
             g.drawString(t, width/6,getHeight() - getHeight()/6);
 
         }
+
+
+    }
+
+    private class GridQ extends JPanel
+    {
+        @Override
+        protected void paintComponent(Graphics g) {
+            super.paintComponent(g);
+            g.setColor(Color.BLACK);
+            g.fillRect(0, 0, getWidth(), getHeight());
+
+            double rewardValue = 10;
+
+            int width = getWidth();
+            int height = getHeight()- getHeight()/4;
+
+
+            for (int i = grid.getRow() - 1; i >= 0; i--) {
+                for (int j = 0; j < grid.getCol(); j++) {
+
+
+                    int x = j * width / grid.getCol();
+                    int y = i * height / grid.getRow();
+
+
+                    if (grid.getGrid()[i][j].isTerminal()) {
+
+                        if (grid.getGrid()[i][j].getCurrVal() > 0) {
+
+                            g.setColor(Color.GREEN);
+                        } else if (grid.getGrid()[i][j].getCurrVal() == Double.NEGATIVE_INFINITY) {
+                            g.setColor(Color.GRAY);
+                        } else
+                            g.setColor(Color.RED);
+                        g.fillRect(x, y, width / grid.getCol(), height / grid.getRow());
+                    } else {
+                    //    g.setColor(getGreenGradient(rewardValue, grid.getGrid()[i][j].getCurrVal()));
+                    //    g.fillRect(x, y, width / grid.getCol(), height / grid.getRow());
+                    //    System.out.println(i + " " + j + " action takes is " + grid.findHighestAdjacentValue(i, j));
+                       // drawArrow(g, x, y, width, height, grid.findHighestAdjacentValue(i,j));
+
+                    }
+
+
+
+                    g.setColor(Color.white);
+                    g.drawRect(x, y, width / grid.getCol(), height / grid.getRow());
+                    printQValues(g,width,height,i,j,x,y);
+
+                }
+            }
+            g.setColor(Color.white);
+            g.setFont(new Font("Arial", Font.BOLD, 20 ));
+            String t  = "Values After " + grid.getK() + " iterations.";
+            g.drawString(t, width/6,getHeight() - getHeight()/6);
+
+        }
+    }
+
+    public void printQValues(Graphics g, int width, int height, int i ,int j, int x, int y)
+    {
+        g.setColor(Color.white);
+        g.setFont(new Font("Arial", Font.BOLD, 10));
+
+
+
+        //north
+        String text = String.format("%.2f", grid.getGrid()[i][j].getqValues()[1]) ;
+        if (text.equals("-Infinity")) {
+            text = "";
+        }
+        FontMetrics fm = g.getFontMetrics();
+        int textWidth = fm.stringWidth(text);
+        int textHeight = fm.getHeight();
+        int textX = x + (width / grid.getCol() - textWidth) / 2;
+        int textY = y + textHeight ;
+
+        g.drawString(text, textX, textY);
+
+        //west
+        text = String.format("%.2f", grid.getGrid()[i][j].getqValues()[2]) ;
+        if (text.equals("-Infinity")) {
+            text = "";
+        }
+        fm = g.getFontMetrics();
+        textWidth = fm.stringWidth(text);
+        textX  = x + (width/ grid.getCol()) - textWidth;
+        textY = y + (height / grid.getRow())/2 ;
+        g.drawString(text, textX, textY);
+
+
+        //south
+         text = String.format("%.2f", grid.getGrid()[i][j].getqValues()[3]) ;
+        if (text.equals("-Infinity")) {
+            text = "";
+        }
+         fm = g.getFontMetrics();
+         textWidth = fm.stringWidth(text);
+         textX = x + (width / grid.getCol() - textWidth) / 2;
+         textY = y + (height/ grid.getRow() - 5) ;
+        g.drawString(text, textX, textY);
+        //east
+        text = String.format("%.2f", grid.getGrid()[i][j].getqValues()[0]) ;
+        if (text.equals("-Infinity")) {
+            text = "";
+        }
+
+        textX  = x ;
+        textY = y+ (height / grid.getRow()) / 2;
+        g.drawString(text, textX, textY);
+
+
+
 
 
     }
