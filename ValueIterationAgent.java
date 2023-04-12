@@ -1,14 +1,16 @@
 import java.util.*;
 
+import static java.lang.String.valueOf;
+
 public class ValueIterationAgent {
-    private int k;
-    private int episodes;
-    private double discount;
-    private double alpha;
-    private double noise;
-    private double transitionCost;
-    private double[][] values;
-    private Terminal terminalState;
+    static int horizontal;
+    static int vertical;
+    static int K;
+    static int Episodes;
+    static double Discount;
+    static double alpha;
+    static double Noise;
+    static double TransitionCost;
 
 
 
@@ -63,61 +65,6 @@ public class ValueIterationAgent {
         }
     }
 
-
-    /*public int[] findHighestAdjacentValue(State[][] grid, int row, int col) {
-        double max = Double.MIN_VALUE;
-        int result = -1;
-        int [] arrResult = new int[3];
-        int pos2 = -1;
-        int pos3 = -1;
-
-
-        // Check north
-        if (row > 0 && grid[row-1][col].getCurrVal() > max) {
-            max = grid[row-1][col].getCurrVal();
-            result = 2;
-            pos3 = 3;
-            pos2 = 1;
-
-        }
-
-        // Check south
-        if (row < grid.length-1 && grid[row+1][col].getCurrVal() > max) {
-            max = grid[row+1][col].getCurrVal();
-            result = 4;
-            pos3 = 3;
-            pos2 = 1;
-        }
-
-        // Check east
-        if (col > 0 && grid[row][col-1].getCurrVal() > max) {
-            max = grid[row][col-1].getCurrVal();
-            result = 1;
-            pos3 = 2;
-            pos2 = 4;
-        }
-
-        // Check west
-        if (col < grid[0].length-1 && grid[row][col+1].getCurrVal() > max) {
-            result = 3;
-            pos3 = 2;
-            pos2 = 4;
-        }
-
-
-
-        grid[row][col].setNextAction( result);
-        grid[row][col].
-        arrResult[0]= result;
-        arrResult[2] = pos2;
-        arrResult[3] = pos3;
-
-
-
-        return arrResult;
-    }
-*/
-
     public double[] getActionValue(int [] action,double [][]grid, int row, int col) {
         double[] result = new double[3];
         int count = 0;
@@ -170,63 +117,118 @@ public class ValueIterationAgent {
         }
     }
 
-//    public double valueIterationAlgorithm(int k ,State currState, double reward, double gamma, double probability)
-//    {
-//        if(k == 0  || terminalState.isExit(currState.getH(),currState.getV(),currState.getCurrVal()))
-//        {
-//            return currState.getCurrVal();
-//        }
-//
-//     //   currState = probability*( reward + gamma* valueIterationAlgorithm(k-1,));
-//
-//
-//
-//
-//
-//
-//
-//        return 0;
-//
-//    }
-
-    public double getTransitionCost() {
-        return transitionCost;
-    }
-
-    public double getProb() {
-        return (1- noise);
-    }
-
-    public double getDiscount() {
-        return discount;
-    }
-
-
-    public static void createGrid(double [][] Grid) {
-        int numRows = Grid.length;
-        int numCols = Grid[0].length;
-
-        // Print top row
-        System.out.print("|");
-        for (int i = 0; i < numCols; i++) {
-            System.out.print("______|");
+    public static void processLine(String line){
+        int newStart = loopTillEquals(line);
+        if(line.charAt(0) == 'H'){
+            horizontal = Character.getNumericValue(line.charAt(newStart+1));  ;
         }
-        System.out.println();
+        else if(line.charAt(0) == 'T'){
+            if(line.charAt(1) == 'r'){
+                TransitionCost =Character.getNumericValue(line.charAt(newStart+1)); ;
+            } else if (line.charAt(1) == 'e') {
 
-        // Print middle rows
-        for (int i = 0; i < numRows; i++) {
-            System.out.print("|");
-            for (int j = 0; j < numCols; j++) {
-                System.out.printf(" %.2f |", Grid[i][j]);
             }
-            System.out.println();
 
-            System.out.print("|");
-            for (int j = 0; j < numCols; j++) {
-                System.out.print("______|");
-            }
-            System.out.println();
+        }
+        else if(line.charAt(0) == 'V'){
+            vertical = Character.getNumericValue(line.charAt(newStart+1));  ;
+        }
+        else if(line.charAt(0) == 'B'){
+
+        }
+        else if(line.charAt(0) == 'R'){
+
+        }
+        else if(line.charAt(0) == 'K'){
+            K = Character.getNumericValue(line.charAt(newStart+1));  ;
+        }
+        else if(line.charAt(0) == 'E'){
+            Episodes  = Character.getNumericValue(line.charAt(newStart+1));  ;
+        }
+        else if(line.charAt(0) == 'D'){
+            Discount = Character.getNumericValue(line.charAt(newStart+1));  ;
+        }
+        else if(line.charAt(0) == 'N'){
+            Noise = Character.getNumericValue(line.charAt(newStart+1));  ;
+
+        }
+        else if(line.charAt(0) == 'a'){
+            alpha  = Character.getNumericValue(line.charAt(newStart+1));  ;
         }
     }
 
+    public static int loopTillEquals(String s){
+        int equalsPos = 0;
+        for (int i = 0; i < s.length(); i++) {
+            if(s.charAt(i) == '='){
+                equalsPos = i;
+                break;
+            }
         }
+        return equalsPos;
+    }
+
+    public static ArrayList<String> processTerminal(String s){
+        int newStart = loopTillEquals(s)+2;
+        ArrayList<String> idk = new ArrayList<>();
+        int commaCounter = 0;
+        StringBuilder stringBuilder = new StringBuilder();
+        for (int i = 0; i < (s.length()-newStart-1); i++) {
+            if(s.charAt(newStart+i) == ','){
+                commaCounter++;
+            }
+            if(commaCounter != 3) {
+                stringBuilder.append(s.charAt(newStart + i));
+            }
+            else{
+                idk.add(valueOf(stringBuilder));
+                stringBuilder = new StringBuilder();
+                commaCounter = 0;
+            }
+            if(i == (s.length()-newStart-2)){
+                idk.add(valueOf(stringBuilder));
+            }
+        }
+        return idk;
+    }
+
+    public static ArrayList<int[]> processCoordList(ArrayList<String> coordList){
+        ArrayList<int[]> idk = new ArrayList<>();
+        for (String cList : coordList) {
+            int newStart = loopTillEquals(cList) + 1;
+            int [] coordinates = new int[3];
+            int checker = 0;
+            for (int j = newStart; j < (cList.length() - newStart - 1); j++) {
+                if(cList.charAt(j) == '+'| cList.charAt(j) == '-'){
+                    String newString = cList.substring(j);
+                    coordinates[2] = processReward(newString);
+                } else if (Character.isDigit(cList.charAt(j))) {
+                    coordinates[checker] = Character.getNumericValue(cList.charAt(j));
+                    checker++;
+                }
+            }
+            idk.add(coordinates);
+        }
+        return idk;
+    }
+
+    public static int processReward(String reward){
+        int rewardInt = 0;
+        StringBuilder subInt = new StringBuilder();
+        if(reward.charAt(0) == '+'){
+            for (int j = 1; j < reward.length()-1; j++) {
+                subInt.append(reward.charAt(j));
+            }
+            rewardInt = Integer.parseInt(String.valueOf(subInt));
+        }
+        else if(reward.charAt(0) == '-'){
+            for (int j = 1; j < reward.length()-1; j++) {
+                subInt.append(reward.charAt(j));
+            }
+            rewardInt = Integer.parseInt(String.valueOf(subInt)) * -1;
+        }
+        return rewardInt;
+    }
+
+
+}
