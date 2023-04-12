@@ -30,54 +30,123 @@ public class GridGUI extends JFrame {
             g.setColor(Color.BLACK);
             g.fillRect(0, 0, getWidth(), getHeight());
 
-            double rewardValue  = 1;
+            double rewardValue = 10;
 
             int width = getWidth();
-            int height = getHeight();
-
-            for (int i = 0; i <grid.getRow(); i++) {
-                for (int j = 0; j < grid.getCol() ; j++) {
-
-                    //yo
-                    int x = i * width / grid.getRow();
-                    int y = j * height / grid.getCol();
+            int height = getHeight()- getHeight()/4;
 
 
-                    if (grid.getGrid()[i][j].isTerminal()) {
+                for (int i = grid.getRow() - 1; i >= 0; i--) {
+                    for (int j = 0; j < grid.getCol(); j++) {
 
-                        if (grid.getGrid()[i][j].getCurrVal() > 0) {
 
-                            g.setColor(Color.GREEN);
-                        } else if (grid.getGrid()[i][j].getCurrVal() == Double.NEGATIVE_INFINITY) {
-                            g.setColor(Color.GRAY);
-                        } else
-                            g.setColor(Color.RED);
-                        g.fillRect(x, y, width / grid.getRow(), height / grid.getCol());
-                    } else {
-                        g.setColor(getGreenGradient(rewardValue,grid.getGrid()[i][j].getCurrVal()));
-                        g.fillRect(x, y, width / grid.getRow(), height / grid.getCol());
+                        int x = j * width / grid.getCol();
+                        int y = i * height / grid.getRow();
+
+
+                        if (grid.getGrid()[i][j].isTerminal()) {
+
+                            if (grid.getGrid()[i][j].getCurrVal() > 0) {
+
+                                g.setColor(Color.GREEN);
+                            } else if (grid.getGrid()[i][j].getCurrVal() == Double.NEGATIVE_INFINITY) {
+                                g.setColor(Color.GRAY);
+                            } else
+                                g.setColor(Color.RED);
+                            g.fillRect(x, y, width / grid.getCol(), height / grid.getRow());
+                        } else {
+                            g.setColor(getGreenGradient(rewardValue, grid.getGrid()[i][j].getCurrVal()));
+                            g.fillRect(x, y, width / grid.getCol(), height / grid.getRow());
+                            System.out.println(i + " " + j + " action takes is " + grid.findHighestAdjacentValue(i, j));
+                            drawArrow(g, x, y, width, height, grid.findHighestAdjacentValue(i,j));
+
+                        }
+
+
+                        g.drawRect(x, y, width / grid.getCol(), height / grid.getRow());
+                        g.setColor(Color.white);
+                        g.setFont(new Font("Arial", Font.BOLD, 10));
+                        String text = String.format("%.2f", grid.getGrid()[i][j].getCurrVal()) ;
+                        if (text.equals("-Infinity")) {
+                            text = "";
+                        }
+                        FontMetrics fm = g.getFontMetrics();
+                        int textWidth = fm.stringWidth(text);
+                        int textHeight = fm.getHeight();
+                        int textX = x + (width / grid.getCol() - textWidth) / 2;
+                        int textY = y + (height / grid.getRow() + textHeight) / 2;
+
+                        g.drawString(text, textX, textY);
 
                     }
-
-
-                    g.drawLine(x/2,y,x/2 + 5,y+5);
-                    g.drawRect(x, y, width / grid.getRow(), height / grid.getCol());
-                    g.setColor(Color.white);
-                    g.setFont(new Font("Arial", Font.BOLD, 10));
-                    String text = String.format("%.2f", grid.getGrid()[i][j].getCurrVal());
-                    FontMetrics fm = g.getFontMetrics();
-                    int textWidth = fm.stringWidth(text);
-                    int textHeight = fm.getHeight();
-                    int textX = x + (width / grid.getRow() - textWidth) / 2;
-                    int textY = y + (height / grid.getCol() + textHeight) / 2;
-
-                    g.drawString(text, textX, textY);
                 }
-            }
+            g.setColor(Color.white);
+            g.setFont(new Font("Arial", Font.BOLD, 20 ));
+            String t  = "Values After " + grid.getK() + " iterations.";
+            g.drawString(t, width/6,getHeight() - getHeight()/6);
 
         }
+
+
     }
 
+    public void drawArrow(Graphics g, int x, int y, int width, int height,int action)
+    {
+        g.setColor(Color.BLACK);
+
+        int x1 = -1,x2=-1,x3=-1,y1=-1,y2=-1,y3=-1;
+        //north
+        if(action == 2) {
+             x1 = x + (width / grid.getCol()) / 2;
+             y1 = y;
+             x2 = (x + (width / grid.getCol()) / 2) - 5;
+             y2 = y + 10;
+             x3 = (x + (width / grid.getCol()) / 2) + 5;
+             y3 = y + 10;
+        }
+        // Draw the three sides of the triangle using drawLine() method
+
+
+        //south
+        else if(action == 4) {
+            x1 = x + (width / grid.getCol()) / 2;
+            y1 = y + height / grid.getRow();
+            x2 = (x + (width / grid.getCol()) / 2) - 5;
+            y2 = (y + height / grid.getRow()) - 10;
+            x3 = (x + (width / grid.getCol()) / 2) + 5;
+            y3 = (y + height / grid.getRow()) - 10;
+        }
+        // Draw the three sides of the triangle using drawLine() method
+
+
+        //east
+        else if(action ==1) {
+            x1 = x;
+            y1 = y + (height / grid.getRow()) / 2;
+            x2 = x + 10;
+            y2 = (y + (height / grid.getRow()) / 2) - 5;
+            x3 = x + 10;
+            y3 = (y + (height / grid.getRow()) / 2) + 5;
+        }
+
+        //west
+        else if( action == 3) {
+        x1 = x + width / grid.getCol();
+        y1 = y + (height / grid.getRow()) / 2;
+        x2 = (x + width / grid.getCol()) - 10;
+        y2 = (y + (height / grid.getRow()) / 2) - 5;
+        x3 = (x + width / grid.getCol()) - 10;
+        y3 = (y + (height / grid.getRow()) / 2) + 5;
+
+    }
+        g.setColor(Color.BLACK);
+        g.fillPolygon(new int[]{x1,x2,x3},new int []{y1,y2,y3},3 );
+
+        g.drawLine(x1, y1, x2, y2);
+        g.drawLine(x2, y2, x3, y3);
+        g.drawLine(x3, y3, x1, y1);
+
+    }
     public static Color getGreenGradient(double max, double curr) {
 
         int n = 0;
@@ -89,19 +158,7 @@ public class GridGUI extends JFrame {
         // Create and return the color object
         return new Color(0, n, 0);
     }
-    public static Color getGridColor(double n) {
-        // Convert the double to an integer
-        int intValue = (int) n;
 
-        // Choose the grid color based on the integer value of n
-        if (intValue < 50) {
-            return Color.LIGHT_GRAY;
-        } else if (intValue < 100) {
-            return Color.GRAY;
-        } else {
-            return Color.DARK_GRAY;
-        }
-    }
 
 
 

@@ -5,10 +5,13 @@ public class Grid {
     private final State [][] grid;
     private final int row;
     private final int col;
-    public Grid(int horizontal, int vertical) {
-        row = horizontal;
-        col = vertical;
-        grid = new State [horizontal][vertical];
+
+    private int k;
+    public Grid(int vertical, int horizontal) {
+        row = vertical;
+        col = horizontal;
+        grid = new State [row][col];
+         k= 0;
     }
 
     public void initialize(){
@@ -17,6 +20,14 @@ public class Grid {
                 grid[i][j] = new State(i,j);
             }
         }
+    }
+
+    public int getK() {
+        return k;
+    }
+
+    public void setK(int k) {
+        this.k = k;
     }
 
     public State[][] getGrid() {
@@ -48,7 +59,7 @@ public class Grid {
                 for (int k = 0; k < actions.length; k++) {
                     grid[i][j].setActionTaken(actions[k]);
                     values = getOtherCell(i,j);
-                    itValues[k] = calculateIterationValue(values[0], values[1], values[2], 0, 0.8, 0.9);
+                    itValues[k] = calculateIterationValue(values[0], values[1], values[2], -0.1, 0.8, 0.9);
                 }
                 if(returnMax(itValues) > 0) {
                     newState.add(new State(i, j, returnMax(itValues)));
@@ -191,5 +202,51 @@ public class Grid {
             }
             System.out.println();
         }
+    }
+
+
+
+    public int findHighestAdjacentValue(int row, int col) {
+        double max = Double.MIN_VALUE;
+        int result = -1;
+
+
+
+        // Check north
+        if (row > 0 && grid[row-1][col].getCurrVal() > max) {
+            max = grid[row-1][col].getCurrVal();
+            result = 2;
+        }
+
+        // Check south
+        if (row < grid.length-1 && grid[row+1][col].getCurrVal() > max) {
+            max = grid[row+1][col].getCurrVal();
+            result = 4;
+        }
+
+        // Check east
+        if (col > 0 && grid[row][col-1].getCurrVal() > max) {
+            max = grid[row][col-1].getCurrVal();
+            result = 1;
+
+        }
+
+        // Check west
+        if (col < grid[0].length-1 && grid[row][col+1].getCurrVal() > max) {
+            result = 3;
+
+        }
+
+
+
+
+
+        return result;
+    }
+
+
+    public void start(int row, int col)
+    {
+
     }
 }

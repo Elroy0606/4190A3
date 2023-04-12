@@ -13,10 +13,10 @@ public class ValueIterationAgent {
 
 
     public static void main(String[] args) {
-        int horizontal = 3;
-        int vertical = 4;
+        int horizontal = 5;
+        int vertical = 5;
 
-        Grid newGrid = new Grid(horizontal,vertical);
+        Grid newGrid = new Grid(vertical,horizontal);
 
 
 
@@ -25,23 +25,24 @@ public class ValueIterationAgent {
 
         int count = 1;
         System.out.println("K = "+ count++);
-        newGrid.addTerminal(0,3,1);
-        newGrid.addTerminal(1,3,-1);
-        newGrid.addTerminal(1,1,Double.NEGATIVE_INFINITY);
-//        newGrid.addTerminal(1,3, 10);
-//        newGrid.addTerminal(1,4, -10);
-//        newGrid.addTerminal(0,2, -10);
-//
-//        newGrid.addTerminal(1,2, Double.NEGATIVE_INFINITY);
-//        newGrid.addTerminal(4,4, Double.NEGATIVE_INFINITY);
+//        newGrid.addTerminal(2,3,1);
+//        newGrid.addTerminal(1,3,-1);
+//        newGrid.addTerminal(1,1,Double.NEGATIVE_INFINITY);
+        newGrid.setK(count);
+        newGrid.addTerminal(1,3, 10);
+        newGrid.addTerminal(1,4, -10);
+        newGrid.addTerminal(0,2, -10);
+
+        newGrid.addTerminal(1,2, Double.NEGATIVE_INFINITY);
+        newGrid.addTerminal(4,4, Double.NEGATIVE_INFINITY);
         newGrid.printGrid();
 
 
-        while(count!= 3) {
+        while(count!= 1001) {
             newGrid.iterateOver();
             System.out.println("K = "+ count);
             newGrid.printGrid();
-            count++;
+            newGrid.setK(count++);
         }
 
         GridGUI displayGrid = new GridGUI(newGrid);
