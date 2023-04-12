@@ -43,19 +43,23 @@ public class ValueIterationAgent {
         newGrid.addTerminal(1,4, -10);
         newGrid.addTerminal(0,2, -10);
 
-        newGrid.addTerminal(1,2, Double.NEGATIVE_INFINITY);
-        newGrid.addTerminal(4,4, Double.NEGATIVE_INFINITY);
+//        newGrid.addTerminal(1,2, Double.NEGATIVE_INFINITY);
+//        newGrid.addTerminal(4,4, Double.NEGATIVE_INFINITY);
         newGrid.printGrid();
 
 
-        while(count!= 1001) {
-            newGrid.iterateOver();
-            System.out.println("K = "+ count);
-            newGrid.printGrid();
-            newGrid.setK(count++);
-        }
+//        while(count!= 1000) {
+//            newGrid.iterateOver();
+//            System.out.println("K = "+ count);
+//            newGrid.printGrid();
+//            newGrid.setK(count++);
+//        }
 
-        GridGUI displayGrid = new GridGUI(newGrid);
+        newGrid.rlQval(3,2,0.9,0.1,-0.1);
+        newGrid.printGrid();
+
+
+       // GridGUI displayGrid = new GridGUI(newGrid);
 
     }
     private static double calculateIterationValue(double pos1, double pos2, double pos3, double reward, double prob, double gamma){

@@ -15,10 +15,10 @@ public class GridGUI extends JFrame {
         setSize(400, 400);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.grid = grid;
-        add(new GridPanel());
-        setVisible(true);
-//        add(new GridQ());
+//        add(new GridPanel());
 //        setVisible(true);
+        add(new GridQ());
+        setVisible(true);
     }
 
 
@@ -129,6 +129,7 @@ public class GridGUI extends JFrame {
                     //    g.fillRect(x, y, width / grid.getCol(), height / grid.getRow());
                     //    System.out.println(i + " " + j + " action takes is " + grid.findHighestAdjacentValue(i, j));
                        // drawArrow(g, x, y, width, height, grid.findHighestAdjacentValue(i,j));
+                        printQValues(g,width,height,i,j,x,y);
 
                     }
 
@@ -136,7 +137,7 @@ public class GridGUI extends JFrame {
 
                     g.setColor(Color.white);
                     g.drawRect(x, y, width / grid.getCol(), height / grid.getRow());
-                    printQValues(g,width,height,i,j,x,y);
+
 
                 }
             }
@@ -156,7 +157,7 @@ public class GridGUI extends JFrame {
 
 
         //north
-        String text = String.format("%.2f", grid.getGrid()[i][j].getqValues()[1]) ;
+        String text = String.format("%.2f", grid.getGrid()[i][j].getNorth()) ;
         if (text.equals("-Infinity")) {
             text = "";
         }
@@ -169,7 +170,7 @@ public class GridGUI extends JFrame {
         g.drawString(text, textX, textY);
 
         //west
-        text = String.format("%.2f", grid.getGrid()[i][j].getqValues()[2]) ;
+        text = String.format("%.2f", grid.getGrid()[i][j].getWest()) ;
         if (text.equals("-Infinity")) {
             text = "";
         }
@@ -177,11 +178,11 @@ public class GridGUI extends JFrame {
         textWidth = fm.stringWidth(text);
         textX  = x + (width/ grid.getCol()) - textWidth;
         textY = y + (height / grid.getRow())/2 ;
-        g.drawString(text, textX, textY);
+        g.drawString(text, textX-5, textY);
 
 
         //south
-         text = String.format("%.2f", grid.getGrid()[i][j].getqValues()[3]) ;
+         text = String.format("%.2f", grid.getGrid()[i][j].getSouth()) ;
         if (text.equals("-Infinity")) {
             text = "";
         }
@@ -191,14 +192,14 @@ public class GridGUI extends JFrame {
          textY = y + (height/ grid.getRow() - 5) ;
         g.drawString(text, textX, textY);
         //east
-        text = String.format("%.2f", grid.getGrid()[i][j].getqValues()[0]) ;
+        text = String.format("%.2f", grid.getGrid()[i][j].getEast()) ;
         if (text.equals("-Infinity")) {
             text = "";
         }
 
         textX  = x ;
         textY = y+ (height / grid.getRow()) / 2;
-        g.drawString(text, textX, textY);
+        g.drawString(text, textX+5, textY);
 
 
 

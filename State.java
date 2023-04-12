@@ -14,6 +14,8 @@ public class State {
 
     public  boolean isTerminal;
 
+    private double north, south, east, west;
+
     private double [] qValues;
 
 
@@ -31,16 +33,44 @@ public class State {
 
     }
 
+    public double getEast() {
+        return east;
+    }
+
+    public double getNorth() {
+        return north;
+    }
+
+    public double getSouth() {
+        return south;
+    }
+
+    public double getWest() {
+        return west;
+    }
+
+    public void setEast(double east) {
+        this.east = east;
+    }
+
+    public void setNorth(double north) {
+        this.north = north;
+    }
+
+    public void setSouth(double south) {
+        this.south = south;
+    }
+
+    public void setWest(double west) {
+        this.west = west;
+    }
+
     public double[] getqValues() {
         return qValues;
     }
 
     public void setQValues(double[] qValues) {
-
-
-        for (int i = 0; i < qValues.length; i++) {
-            this.qValues[i] = qValues[i];
-        }
+        this.qValues = qValues;
 
 
     }
