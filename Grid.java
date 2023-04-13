@@ -207,7 +207,7 @@ public class Grid {
                     System.out.printf("      |");
                 }
                 else{
-                    System.out.printf(" %.2f   |", grid[i][j].getCurrVal());
+
                 }
 
             }
@@ -270,6 +270,8 @@ public class Grid {
     {
 
     }
+
+
 
 
 

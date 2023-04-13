@@ -28,11 +28,19 @@ public class State {
         possibleActions = new int[3];
         actionTaken = 0;
         isTerminal = false;
-        qValues = new double[4];
+        north = 0;
+        south = 0;
+        east = 0;
+        west = 0;
+        iniatQVal();
 
 
     }
 
+    public void iniatQVal()
+    {
+        qValues = new double[]{0,0,0,0};
+    }
     public double getEast() {
         return east;
     }
@@ -113,11 +121,29 @@ public class State {
         this.currVal = currVal;
     }
 
+    public void setQAction(int action, double value)
+    {
+        System.out.println(action + " " + " Value added" + value);
+        qValues[action-1] = value;
+    }
     public double getOldVal() {
         return oldVal;
     }
 
     public int[] getPossibleActions() {
         return possibleActions;
+    }
+
+    public void setMaxQ()
+    {
+        double max = getEast();
+        if( max < getNorth())
+            max = getNorth();
+        else if( max < getWest())
+            max = getWest();
+        else if (max < getSouth())
+            max = getSouth();
+
+        setCurrVal(max);
     }
 }
